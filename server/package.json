@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "query": "node src/query.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/index.js",
+    "chat": "node src/chatting.js"
   },
   "keywords": [],
   "author": "",
