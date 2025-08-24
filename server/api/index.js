@@ -7,12 +7,19 @@ import { chatting } from '../src/chatting.js';
 
 
 const app = express();
-app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const options = {
+    origin: ['http://localhost:5173', 'https://pdf-reader-bot-one.vercel.app'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+}
+
+app.use(cors(options));
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/');
@@ -24,7 +31,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.get('/get', (req, res) => {
+app.get('/', (req, res) => {
     res.json({
         message: 'Hello World'
     });

@@ -315,6 +315,7 @@
 // export default App;
 import React, { useRef, useEffect, memo } from 'react';
 import { Upload, Send, File, User, Bot } from "lucide-react";
+import { Base_URL } from './main';
 
 // Move MessageBubble outside and memoize it to prevent unnecessary re-renders
 const MessageBubble = memo(({ messages, index }) => {
@@ -396,7 +397,7 @@ const App = () => {
 
         console.log('formData: ', formData);
         try {
-            const response = await fetch('http://localhost:3000/upload', {
+            const response = await fetch(`${Base_URL}/upload`, {
                 method: 'POST',
                 body: formData
             });
@@ -429,7 +430,7 @@ const App = () => {
         setChat(prevChat => [...prevChat, { role: 'user', message: currentQuestion }]);
 
         try {
-            const response = await fetch('http://localhost:3000/chat', {
+            const response = await fetch(`${Base_URL}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
