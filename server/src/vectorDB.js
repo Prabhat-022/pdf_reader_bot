@@ -15,6 +15,8 @@ import { PineconeStore } from '@langchain/pinecone';
 
 const pinecone = new Pinecone();
 
+
+//create index or create the database name
 export async function createIndex() {
     try {
         // Check if index exists using listIndexes()
@@ -39,14 +41,18 @@ export async function createIndex() {
             waitUntilReady: true,
         });
         console.log('Index created successfully');
+
     } catch (error) {
+
         console.error('Error creating index:', error);
+
         if (error.message?.includes('already exists')) {
             console.log('Index already exists');
         }
     }
 }
 
+//delete the index after one day 
 export async function deleteIndex(indexName) {
     try {
         await pinecone.deleteIndex(indexName);
@@ -59,8 +65,12 @@ export async function deleteIndex(indexName) {
     }
 }
 
+//delete the index after one day 
+setInterval(() => {
+    deleteIndex(process.env.PINECONE_INDEX_NAME);
+}, 24 * 60 * 60 * 1000);
 
-
+//load the pdf from the public folder and split the text into chunks
 export async function loadPDF(file) {
     try {
         const PDF_PATH = `./public/${file}`;
@@ -84,6 +94,7 @@ export async function loadPDF(file) {
     }
 }
 
+//save the chunked documents in the database
 export async function saveInDatabase(chunkedDocs) {
     try {
         const embeddings = new GoogleGenerativeAIEmbeddings({
