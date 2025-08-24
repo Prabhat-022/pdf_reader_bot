@@ -2,8 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import multer from 'multer';
-import { createIndex, loadPDF } from './vectorDB.js';
-import { chatting } from './chatting.js';
+import { createIndex, loadPDF } from '../src/vectorDB.js';
+import { chatting } from '../src/chatting.js';
 
 
 const app = express();
@@ -23,6 +23,12 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+app.get('/get', (req, res) => {
+    res.json({
+        message: 'Hello World'
+    });
+});
 
 app.post('/upload', upload.single('file'), async (req, res) => {
     const { originalname, filename } = req.file;
