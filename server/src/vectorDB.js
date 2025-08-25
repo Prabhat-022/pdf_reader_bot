@@ -71,7 +71,7 @@ setInterval(() => {
 }, 24 * 60 * 60 * 1000);
 
 //load the pdf from the public folder and split the text into chunks
-export async function loadPDF(file) {
+export async function loadPDF(file, req, res) {
     try {
         const PDF_PATH = `./public/${file}`;
         const pdfLoader = new PDFLoader(PDF_PATH);
@@ -86,16 +86,22 @@ export async function loadPDF(file) {
 
         const chunkedDocs = await textSplitter.splitDocuments(rowDocs);
         console.log("Chunking Completed");
-        saveInDatabase(chunkedDocs);
+        await saveInDatabase(chunkedDocs);
+        res.status(200).json({
+            message: 'File uploaded successfully'
+        });
 
     } catch (error) {
         console.error(error);
         console.log('Failed to load PDF');
+        res.status(500).json({
+            message: 'Failed to load PDF'
+        });
     }
 }
 
 //save the chunked documents in the database
-export async function saveInDatabase(chunkedDocs) {
+export async function saveInDatabase(chunkedDocs, req, res) {
     try {
         const embeddings = new GoogleGenerativeAIEmbeddings({
             apiKey: process.env.GEMINI_API_KEY,
@@ -111,16 +117,26 @@ export async function saveInDatabase(chunkedDocs) {
                 pineconeIndex,
                 maxConcurrency: 5,
             });
+            
             console.log("***Data Stored succesfully***");
+            res.status(200).json({
+                message: 'File uploaded successfully'
+            });
 
         } catch (error) {
             console.error(error);
             console.log('Failed to save in database');
+            res.status(500).json({
+                message: 'Failed to save in database'
+            });
         }
         console.log("***Data Stored succesfully***");
 
     } catch (error) {
         console.error(error);
         console.log('Failed to save in database');
+        res.status(500).json({
+            message: 'Failed to save in database'
+        });
     }
 }

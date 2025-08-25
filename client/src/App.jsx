@@ -366,7 +366,6 @@ const App = () => {
         { role: 'assistant', message: 'Hello! I\'m your AI assistant. Upload a PDF document and I\'ll help you find answers from its content.' }
     ]);
 
-    console.log('chat: ', chat);
 
     const chatEndRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -395,7 +394,6 @@ const App = () => {
         const formData = new FormData();
         formData.append('file', pdf);
 
-        console.log('formData: ', formData);
         try {
             const response = await fetch(`${Base_URL}/upload`, {
                 method: 'POST',
@@ -403,7 +401,6 @@ const App = () => {
             });
             const data = await response.json();
 
-            console.log('data: ', data);
             // Note: localStorage is not available in Claude artifacts, but keeping for your local environment
             // localStorage.setItem('vectorStores', JSON.stringify(data.vectorStores));
             setChat(prevChat => [...prevChat, {
@@ -438,7 +435,6 @@ const App = () => {
                 body: JSON.stringify({ question: currentQuestion })
             });
             const { role, message } = await response.json();
-            console.log('data: ', role, message);
             setChat(prevChat => [...prevChat, { role: role, message: message }]);
 
         } catch (error) {

@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 
 app.post('/upload', upload.single('file'), async (req, res) => {
     const { originalname, filename } = req.file;
-    console.log('file: ',  req.file);   
+    console.log('file: ', req.file);
 
 
 
@@ -49,8 +49,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         });
     }
 
-    createIndex();
-    loadPDF(filename);
+    await createIndex();
+    await loadPDF(filename);
     res.json({
         role: 'assistant',
         message: 'File uploaded successfully'
